@@ -15,8 +15,21 @@
             {{ miFormulario.as_table }}
         </table>
 
-        <input type="submit", value="Enviar">
-
-    </form>
-
+        <input type="submit", value="Cargar producto">
+    <p                                                      ></p>
+        <form method="GET">
+            {% csrf_token %}
+            {{ form.as_p }}
+            
+            <a href="{% url 'busquedaProducto' %}" class="btn btn-success">Buscar productos</a>
+        </form>        
+        <p                                                      ></p>                                            
+       
+        <p                                                      ></p>
+        <form method="GET">
+            {% csrf_token %}
+            {{ form.as_p }}
+            
+            <a href="{% url 'listaProducto' %}" class="btn btn-success">Lista de productos</a>
+        </form> 
 {% endblock %}

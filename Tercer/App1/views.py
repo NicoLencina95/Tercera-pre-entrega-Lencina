@@ -8,7 +8,7 @@ def producto(self):
     texto= f"----> producto: {producto.nombre}, codigodeventa: {producto.codigodeventa}"
     return HttpResponse(texto)
 
-    from django.shortcuts import render
+from django.shortcuts import render
 
 
 
@@ -53,7 +53,7 @@ def vendedorFormulario(request):
         miFormulario = VendedorFormulario(request.POST) # Aqui me llega la informacion del html
         print(miFormulario)
         
-        if miFormulario.is_valid:
+        if miFormulario.is_valid():
             informacion = miFormulario.cleaned_data
             vendedor = Vendedor(int(informacion['id']),str(informacion['nombre']),str(informacion['apellido']),
                                    informacion['email'])
@@ -114,3 +114,84 @@ def buscar(request):
           respuesta= "No enviaste datos"
 
      return HttpResponse(respuesta)
+
+def leerVendedores(request):
+    vendedores= Vendedor.objects.all() # trae a todos los pendedores
+    contexto= {"vendedores": vendedores}
+    return render(request, "App1/leerVendedores.html",contexto)
+
+def eliminarVendedor(request, vendedor_nombre):
+    vendedor = Vendedor.objects.get(nombre=vendedor_nombre)
+    vendedor.delete()
+    # vuelvo al menú
+    vendedores = Vendedor.objects.all()  # trae todos los pendedores 
+    contexto = {"vendedores": vendedores}
+    return render(request, "App1/leerVendedores.html", contexto)
+
+def editarVendedor(request, vendedor_nombre):
+    # Recibe el nombre del pendedor que vamos a modificar
+    vendedor = Vendedor.objects.get(nombre=vendedor_nombre)
+    # Si es metodo POST hago lo mismo que el agregar
+    if request.method == 'POST':
+        # aquí mellega toda la información del html
+        miFormulario = VendedorFormulario(request.POST)
+        print(miFormulario)
+        if miFormulario.is_valid:  # Si pasó la validación de Django
+            informacion = miFormulario.cleaned_data
+
+            vendedor.nombre = informacion['nombre']
+            vendedor.apellido = informacion['apellido']
+            vendedor.email = informacion['email']
+            
+            vendedor.save()
+
+            # Vuelvo al inicio o a donde quieran
+            return render(request, "App1/inicio.html")
+   # En caso que no sea post
+    else:
+        # Creo el formulario con los datos que voy a modificar
+        miFormulario = VendedorFormulario(initial={'nombre': vendedor.nombre, 'apellido': vendedor.apellido,
+                                                   'email': vendedor.email})
+    # Voy al html que me permite editar
+    return render(request, "App1/editarVendedor.html", {"miFormulario": miFormulario, "vendedor_nombre": vendedor_nombre})                 
+
+from django.shortcuts import render
+
+def busqueda_producto(request):
+    return render(request, 'busquedaProducto.html')
+
+from django.views.generic import ListView
+class ProductoList(ListView):
+    model =Producto 
+    template_name='/App1/producto_list.html'
+
+from django.views.generic.detail import DetailView
+class ProductoDetalle(DetailView):
+    model=Producto 
+    template_name= "App1/producto_detalle.html"
+
+from django.views.generic.edit import CreateView
+from django.urls import reverse_lazy
+class ProductoCreacion(CreateView):
+    model=Producto
+    success_url="/App1/producto/list"
+    fields= ['nombre','codigodeventa']
+
+from django.views.generic.edit import UpdateView
+class ProductoUpdate(UpdateView):
+    model=Producto
+    success_url= "/App1/producto/list"
+    fields=['nombre','codigodeventa']
+
+from django.views.generic.edit import DeleteView
+class ProductoDelete(DeleteView):
+    model=Producto
+    success_url="/App1/producto/list"
+
+
+def lista_producto(request):
+    return render(request, 'producto_list.html')
+
+def lista_productos(request):
+    productos = Producto.objects.all()
+    return render(request, 'producto_list.html', {'productos': productos})
