@@ -3,19 +3,28 @@
 {% load static %}
 
 {% block contenidoQueCambia %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body style="background-image: url('{% static 'App1/assets/img/Lupa.jpg' %}'); 
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center">
+</body>
 
     <!--Aquí va lo que cambia, y lo asociado a está vista :) -->
     {% if miFormulario.errors %} 
     <p style="color: red;">Estan mal los datos, revisar</p>
     {% endif %}
 
-    <form action="" method="post">{% csrf_token %}
-        <!--Aca esta la magia-->
-        <table>
-            {{ miFormulario.as_table }}
-        </table>
-
-        <input type="submit", value="Cargar producto">
+   <center>
     <p                                                      ></p>
         <form method="GET">
             {% csrf_token %}
@@ -31,5 +40,5 @@
             {{ form.as_p }}
             
             <a href="{% url 'listaProducto' %}" class="btn btn-success">Lista de productos</a>
-        </form> 
+        </form> </center>
 {% endblock %}

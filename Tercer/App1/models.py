@@ -1,28 +1,23 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
 class Producto(models.Model):
+    id = models.IntegerField(primary_key=True, unique=True)
     nombre= models.CharField(max_length=40)
     codigodeventa= models.IntegerField()
+    descripcion= models.TextField(default='')
+    imagen = models.ImageField(upload_to="productos", null=True, blank=True)
+    
     def __str__(self):
-            return f"Producto: {self.nombre} - Código de venta {self.codigodeventa}"
-class Vendedor(models.Model):
-    nombre= models.CharField(max_length=30)
-    apellido= models.CharField(max_length=30)
-    email= models.EmailField()
+            return f"Producto: {self.nombre} - Código de venta {self.codigodeventa} - descripcion {self.descripcion} "
 
+
+
+
+class Avatar(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    imagen = models.ImageField(upload_to='avatares', null=True, blank = True)
     def __str__(self):
-            return f"Nombre: {self.nombre} - Apellido {self.apellido} - E-Mail {self.email}"
-class Cliente(models.Model):
-    nombre = models.CharField(max_length=30)
-    apellido= models.CharField(max_length=30)
-    email= models.EmailField()
-    tarjeta= models.CharField(max_length=30)
-    def __str__(self):
-            return f"Nombre: {self.nombre} - Apellido {self.apellido} - E-Mail {self.email} - Tarjeta {self.tarjeta}"
-class Entregable(models.Model):
-    nombre= models.CharField(max_length=30)
-    fechaentrega= models.DateField()
-    entregado= models.BooleanField()
-    def __str__(self):
-            return f"Nombre: {self.nombre} - Fecha de entrega {self.fechaentrega} - Entragado? {self.entregado}"
+        return f"{self.user} - {self.imagen}"
+    

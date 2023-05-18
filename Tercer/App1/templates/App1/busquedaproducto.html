@@ -1,4 +1,27 @@
+{% extends "App1/padre.html" %}
+
+{% load static %}
+
+{% block contenidoQueCambia %}
+{% load static %}
 <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body style="background-image: url('{% static 'App1/assets/img/bg-masthead2.jpg' %}'); 
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: lower">
+<p style="margin-bottom: 300px;"></p>
+
+<center>
+    <h1 style="color: aliceblue;" > Introduce el código de venta del producto que buscas</h1>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -22,3 +45,5 @@
      </form>   
 </body>
 </html>
+</center>
+{%endblock%}

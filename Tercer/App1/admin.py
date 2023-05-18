@@ -5,6 +5,8 @@ from .models import *
 # Register your models here.
 
 admin.site.register(Producto)
-admin.site.register(Cliente)
-admin.site.register(Vendedor)
-admin.site.register(Entregable)
+admin.site.register(Avatar)
+
+# Register your models here.
+
+
